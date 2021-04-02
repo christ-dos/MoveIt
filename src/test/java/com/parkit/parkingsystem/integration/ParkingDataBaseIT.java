@@ -12,7 +12,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -23,7 +22,6 @@ import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
 import com.parkit.parkingsystem.integration.service.DataBasePrepareService;
-import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.ParkingService;
 import com.parkit.parkingsystem.util.InputReaderUtil;
 
@@ -35,8 +33,6 @@ public class ParkingDataBaseIT {
 	private static TicketDAO ticketDAO;
 	private static DataBasePrepareService dataBasePrepareService;
 	private static ParkingService parkingService;
-	private static Ticket ticket;
-	private static boolean isAvailable;
 
 	@Mock
 	private static InputReaderUtil inputReaderUtil;
@@ -58,6 +54,8 @@ public class ParkingDataBaseIT {
 		when(inputReaderUtil.readSelection()).thenReturn(1);
 		when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
 		dataBasePrepareService.clearDataBaseEntries();
+		// System.out.println("beforeEach");
+		parkingService.processIncomingVehicle();
 
 	}
 
@@ -77,13 +75,12 @@ public class ParkingDataBaseIT {
 	}
 
 	@Test
-	@Disabled
 	public void testParkingACar() {
 
 		// GIVEN
 
 		// WHEN
-		parkingService.processIncomingVehicle();
+		// parkingService.processIncomingVehicle();
 		String VehicleRegNumberDAO = ticketDAO.getTicket("ABCDEF").getVehicleRegNumber();
 
 		int availableParkingSlotDAO = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
@@ -107,12 +104,13 @@ public class ParkingDataBaseIT {
 		// GIVEN
 
 		// WHEN
-		parkingService.processIncomingVehicle();
+		// parkingService.processIncomingVehicle();
 		parkingService.processExitingVehicle();
 
 		double farepopulatedInDB = ticketDAO.getTicket("ABCDEF").getPrice();
 		Date outTimePopulatedInDB = ticketDAO.getTicket("ABCDEF").getOutTime();
 		boolean updateTicketisTrue = ticketDAO.updateTicket(ticketDAO.getTicket("ABCDEF"));
+		// Date calendrier = Calendar.getInstance().getTime();
 
 		// testParkingACar();
 

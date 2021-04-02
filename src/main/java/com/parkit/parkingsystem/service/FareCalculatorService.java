@@ -16,6 +16,10 @@ public class FareCalculatorService {
 		// TODO: Some tests are failing here. Need to check if this logic is correct
 		double durationMs = ((outTime - inTime) / (60 * 1000));
 		double duration = durationMs / 60;
+		// duration is less that 1/2 hours
+		if (duration < 0.5) {
+			duration = 0;
+		}
 
 		switch (ticket.getParkingSpot().getParkingType()) {
 		case CAR: {
@@ -29,5 +33,6 @@ public class FareCalculatorService {
 		default:
 			throw new IllegalArgumentException("Unkown Parking Type");
 		}
+
 	}
 }
