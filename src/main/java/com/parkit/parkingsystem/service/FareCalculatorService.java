@@ -16,8 +16,8 @@ public class FareCalculatorService {
 		// TODO: Some tests are failing here. Need to check if this logic is correct
 		double durationMs = ((outTime - inTime) / (60 * 1000));
 		double duration = durationMs / 60;
-		// duration is less that 1/2 hours
-		if (duration < 0.5) {
+
+		if (duration < 0.5) { // if duration is less that 1/2 hours
 			duration = 0;
 		}
 
@@ -33,6 +33,14 @@ public class FareCalculatorService {
 		default:
 			throw new IllegalArgumentException("Unkown Parking Type");
 		}
+
+	}
+
+	public void calculateFareWithDiscountFivePercent(Ticket ticket) {
+		calculateFare(ticket);
+		double priceWithDiscount = ticket.getPrice() - (ticket.getPrice() * 0.05);// 5% give coefficient 0.05
+		System.out.println("The full fees is  :" + ticket.getPrice());
+		ticket.setPrice(priceWithDiscount);
 
 	}
 }
