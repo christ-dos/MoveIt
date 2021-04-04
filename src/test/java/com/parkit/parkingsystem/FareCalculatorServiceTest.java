@@ -114,7 +114,7 @@ public class FareCalculatorServiceTest {
 		ticket.setOutTime(outTime);
 		ticket.setParkingSpot(parkingSpot);
 		// rounded to the nearest tenth
-		double priceExpected = fareCalculatorService.getPriceRedouded(0.75 * Fare.BIKE_RATE_PER_HOUR);
+		double priceExpected = fareCalculatorService.getPriceRounded(0.75 * Fare.BIKE_RATE_PER_HOUR);
 		fareCalculatorService.calculateFare(ticket);
 		// THEN
 		assertEquals(priceExpected, ticket.getPrice());
@@ -133,7 +133,7 @@ public class FareCalculatorServiceTest {
 		ticket.setOutTime(outTime);
 		ticket.setParkingSpot(parkingSpot);
 		// rounded to the nearest tenth
-		double priceExpected = fareCalculatorService.getPriceRedouded(0.75 * Fare.CAR_RATE_PER_HOUR);
+		double priceExpected = fareCalculatorService.getPriceRounded(0.75 * Fare.CAR_RATE_PER_HOUR);
 		fareCalculatorService.calculateFare(ticket);
 		// THEN
 		assertEquals(priceExpected, ticket.getPrice());
@@ -152,7 +152,7 @@ public class FareCalculatorServiceTest {
 		ticket.setOutTime(outTime);
 		ticket.setParkingSpot(parkingSpot);
 		// rounded to the nearest tenth
-		double priceExpected = fareCalculatorService.getPriceRedouded(24 * Fare.CAR_RATE_PER_HOUR);
+		double priceExpected = fareCalculatorService.getPriceRounded(24 * Fare.CAR_RATE_PER_HOUR);
 		fareCalculatorService.calculateFare(ticket);
 		// THEN
 		assertEquals((priceExpected), ticket.getPrice());
@@ -207,7 +207,7 @@ public class FareCalculatorServiceTest {
 		ticket.setParkingSpot(parkingSpot);
 		// rounded to the nearest tenth
 		double PriceExpectedWithDiscount = fareCalculatorService
-				.getPriceRedouded(PriceExpected - (PriceExpected * 0.05));// 5% gives
+				.getPriceRounded(PriceExpected - (PriceExpected * 0.05));// 5% gives
 																			// the rate 0.05
 		fareCalculatorService.calculateFareWithDiscountFivePercent(ticket);
 		// THEN

@@ -34,7 +34,7 @@ public class FareCalculatorService {
 		// Calculate the fare rate using the getTicketFareRate method
 		double fareRate = getTicketFareRate(ticket);
 		// ticket.setPrice(duration * fareRate);
-		ticket.setPrice(getPriceRedouded(duration * fareRate));
+		ticket.setPrice(getPriceRounded(duration * fareRate));
 	}
 
 	/**
@@ -70,11 +70,11 @@ public class FareCalculatorService {
 		calculateFare(ticket);
 		double price = ticket.getPrice();
 		double reducing = price * discount;
-		System.out.println("The full fees is  :" + getPriceRedouded(price) + "$");
-		ticket.setPrice(getPriceRedouded(price - reducing));
+		System.out.println("The full fees is  :" + getPriceRounded(price) + "$");
+		ticket.setPrice(getPriceRounded(price - reducing));
 	}
 
-	public double getPriceRedouded(double price) {
+	public double getPriceRounded(double price) {
 
 		return Precision.round(price, 1);
 

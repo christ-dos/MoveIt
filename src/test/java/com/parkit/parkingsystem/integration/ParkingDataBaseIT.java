@@ -60,12 +60,12 @@ public class ParkingDataBaseIT {
 		when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
 		System.out.println("executer avec before each");
 		dataBasePrepareService.clearDataBaseEntries();
-		// parkingService.processIncomingVehicle();
+		parkingService.processIncomingVehicle();
 	}
 
 	@AfterEach
 	private void unDefPerTest() throws Exception {
-		parkingService.processIncomingVehicle();
+
 	}
 
 	@Test
