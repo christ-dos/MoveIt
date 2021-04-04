@@ -35,6 +35,7 @@ public class ParkingService {
 			if (parkingSpot != null && parkingSpot.getId() > 0) {
 				String vehicleRegNumber = getVehichleRegNumber();
 				occurences = ticketDAO.getOccurencesTicket(vehicleRegNumber);
+				// check if it is a recurring user of the parking lot
 				if (occurences >= 1) {
 					System.out.println(
 							"Welcome back!As a recurring user of our parking lot, you'll benefit from a 5% discount.");
@@ -109,25 +110,24 @@ public class ParkingService {
 			Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
 			Date outTime = new Date();
 			ticket.setOutTime(outTime);
+			// search if the vehicleRegNumber in already save in DB
 			int occurences = ticketDAO.getOccurencesTicket(vehicleRegNumber);
 
 			if (occurences < 2) {
-
 				fareCalculatorService.calculateFare(ticket);
-				System.out.println("Please pay the parking fare:" + ticket.getPrice());
+				System.out.println("Please pay the parking fare:" + ticket.getPrice() + "$");
+				// fare calculate with discount
 			} else {
-
 				fareCalculatorService.calculateFareWithDiscountFivePercent(ticket);
-				System.out.println("Please pay the parking fare (you get a 5% discount): " + ticket.getPrice());
+				System.out.println("Please pay the parking fare (you get a 5% discount): " + ticket.getPrice() + "$");
 			}
-
 			if (ticketDAO.updateTicket(ticket)) {
 				ParkingSpot parkingSpot = ticket.getParkingSpot();
 				parkingSpot.setAvailable(true);
 				parkingSpotDAO.updateParking(parkingSpot);
 
-				System.out.println(
-						"Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:" + outTime);
+				System.out.println("Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:"
+						+ outTime + "$");
 				// System.out.println("les occurences:" + occurences);
 
 			} else {
