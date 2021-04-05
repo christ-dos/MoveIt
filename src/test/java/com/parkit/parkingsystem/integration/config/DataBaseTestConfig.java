@@ -11,10 +11,29 @@ import org.apache.logging.log4j.Logger;
 
 import com.parkit.parkingsystem.config.DataBaseConfig;
 
+/**
+ * Class that configure the database for the tests and that extend the class
+ * DataBaseConfig
+ * 
+ * @author Christine Duarte
+ *
+ */
 public class DataBaseTestConfig extends DataBaseConfig {
-
+	/**
+	 * An instance of Logger
+	 * 
+	 * @see Logger
+	 */
 	private static final Logger logger = LogManager.getLogger("DataBaseTestConfig");
 
+	/**
+	 * Method that get connection to the database test
+	 * 
+	 * @exception ClassNotFoundException The exception is not treated it's throws
+	 * 
+	 * @exception SQLException           The exception is not treated it's throws
+	 * 
+	 */
 	public Connection getConnection() throws ClassNotFoundException, SQLException {
 		logger.info("Create DB connection");
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -22,6 +41,12 @@ public class DataBaseTestConfig extends DataBaseConfig {
 				"rootroot");
 	}
 
+	/**
+	 * Method that close connection to the database test
+	 * 
+	 * @exception SQLException is throws if occur an error while closing the
+	 *                         connection of database
+	 */
 	public void closeConnection(Connection con) {
 		if (con != null) {
 			try {
@@ -33,6 +58,12 @@ public class DataBaseTestConfig extends DataBaseConfig {
 		}
 	}
 
+	/**
+	 * Method that close the prepared statement to the database test
+	 * 
+	 * @exception SQLException is throws if occur an error while closing prepared
+	 *                         statement
+	 */
 	public void closePreparedStatement(PreparedStatement ps) {
 		if (ps != null) {
 			try {
@@ -44,6 +75,12 @@ public class DataBaseTestConfig extends DataBaseConfig {
 		}
 	}
 
+	/**
+	 * Method that close the set of results of the database test
+	 * 
+	 * @exception SQLException is throws if occur an error while closing the result
+	 *                         set
+	 */
 	public void closeResultSet(ResultSet rs) {
 		if (rs != null) {
 			try {

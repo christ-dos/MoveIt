@@ -22,18 +22,49 @@ import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.ParkingService;
 import com.parkit.parkingsystem.util.InputReaderUtil;
 
+/**
+ * Class that test the Parking Service with MockitoExtension
+ * 
+ * @author Christine Duarte
+ *
+ */
 @ExtendWith(MockitoExtension.class)
 public class ParkingServiceTest {
 
+	/**
+	 * An attribute of the class
+	 * 
+	 * @see ParkingService
+	 */
 	private static ParkingService parkingService;
 
+	/**
+	 * A mock of the class InputReaderUtil
+	 * 
+	 * @see InputReaderUtil
+	 */
 	@Mock
 	private static InputReaderUtil inputReaderUtil;
+
+	/**
+	 * A mock of the class ParkingSpotDAO
+	 * 
+	 * @see ParkingSpotDAO
+	 */
 	@Mock
 	private static ParkingSpotDAO parkingSpotDAO;
+
+	/**
+	 * A mock of the class TicketDAO
+	 * 
+	 * @see TicketDAO
+	 */
 	@Mock
 	private static TicketDAO ticketDAO;
 
+	/**
+	 * Method that set the configuration required before each test
+	 */
 	@BeforeEach
 	private void setUpPerTest() {
 		try {
@@ -56,6 +87,10 @@ public class ParkingServiceTest {
 		}
 	}
 
+	/**
+	 * Method that test the process to exiting the parking spot verification if the
+	 * methods was called with mocks
+	 */
 	@Test
 	public void processExitingVehicleTest() {
 		parkingService.processExitingVehicle();

@@ -26,23 +26,44 @@ import com.parkit.parkingsystem.service.ParkingService;
 import com.parkit.parkingsystem.util.InputReaderUtil;
 
 /**
- * Class Test that testing if the ParkingService
+ * Class that Test the ParkingService and the database with an integration test
  * 
  * @author Christine Duarte
  *
  */
 @ExtendWith(MockitoExtension.class)
 public class ParkingDataBaseIT {
-
+	/**
+	 * @see DataBaseTestConfig
+	 */
 	private static DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
+	/**
+	 * @see ParkingSpotDAO
+	 */
 	private static ParkingSpotDAO parkingSpotDAO;
+	/**
+	 * @see TicketDAO
+	 */
 	private static TicketDAO ticketDAO;
+	/**
+	 * @see DataBasePrepareService
+	 */
 	private static DataBasePrepareService dataBasePrepareService;
+	/**
+	 * @see ParkingService
+	 */
 	private static ParkingService parkingService;
-
+	/**
+	 * @see InputReaderUtil
+	 */
 	@Mock
 	private static InputReaderUtil inputReaderUtil;
 
+	/**
+	 * Method that set the configuration required before anything
+	 * 
+	 * @throws Exception The exception is not treated it's throws
+	 */
 	@BeforeAll
 	private static void setUp() throws Exception {
 		parkingSpotDAO = new ParkingSpotDAO();
@@ -53,6 +74,11 @@ public class ParkingDataBaseIT {
 		dataBasePrepareService.clearDataBaseEntries();
 	}
 
+	/**
+	 * Method that set the configuration required before each test
+	 * 
+	 * @throws Exception The exception is not treated it's throws
+	 */
 	@BeforeEach
 	private void setUpPerTest() throws Exception {
 		parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
@@ -63,11 +89,20 @@ public class ParkingDataBaseIT {
 		parkingService.processIncomingVehicle();
 	}
 
+	/**
+	 * Method that set the configuration required after each test
+	 * 
+	 * @throws Exception The exception is not treated it's throws
+	 */
 	@AfterEach
 	private void unDefPerTest() throws Exception {
 
 	}
 
+	/**
+	 * Method that test if the ticket is saved in the database and if the parking
+	 * table is is updated with availability
+	 */
 	@Test
 	public void testParkingACar() {
 
@@ -85,6 +120,12 @@ public class ParkingDataBaseIT {
 		// with availability
 	}
 
+	/**
+	 * Method that test if the fare generated and the out time were populated
+	 * correctly in database
+	 * 
+	 * @throws Exception The exception is not treated it's throws
+	 */
 	@Test
 	public void testParkingLotExit() throws Exception {
 		// GIVEN
