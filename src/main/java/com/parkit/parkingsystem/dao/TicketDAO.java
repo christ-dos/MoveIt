@@ -14,12 +14,36 @@ import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
 
+/**
+ * Class that manage the ticket in the database
+ * 
+ * @author Christine Duarte
+ *
+ */
 public class TicketDAO {
-
+	/**
+	 * Creation of a logger instance to manage the logs of the application
+	 * 
+	 * @see Logger
+	 */
 	private static final Logger logger = LogManager.getLogger("TicketDAO");
-
+	/**
+	 * An instance of DataBaseConfig
+	 * 
+	 * @see DataBaseConfig
+	 */
 	public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
+	/**
+	 * Method that save a ticket in the database with columns :
+	 * 
+	 * @param ticket an instance of ticket that contain : ID, PARKINGSPOT,
+	 *               VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME
+	 * 
+	 * @return false if the ticket cannot be saved with success
+	 * 
+	 * @exception if the ticket cannot be saved, display the exception with a logger
+	 */
 	public boolean saveTicket(Ticket ticket) {
 		Connection con = null;
 		try {
@@ -34,20 +58,31 @@ public class TicketDAO {
 			ps.setTimestamp(5, (ticket.getOutTime() == null) ? null : (new Timestamp(ticket.getOutTime().getTime())));
 			return ps.execute();
 		} catch (Exception ex) {
-			logger.error("Error fetching next available slot", ex);
+			logger.error("Error save ticket info", ex);
 		} finally {
 			dataBaseConfig.closeConnection(con);
 		}
 		return false;
 	}
 
+	/**
+	 * Method that get a ticket saved in the database
+	 * 
+	 * @param vehicleRegNumber A String with the Vehicle Registration Number
+	 * 
+	 * @return ticket With values of the columns :ID, PARKING_NUMBER,
+	 *         VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME saved the in database
+	 * 
+	 * @exception if the ticket cannot be obtained, display the exception with a
+	 *               logger
+	 * 
+	 */
 	public Ticket getTicket(String vehicleRegNumber) {
 		Connection con = null;
 		Ticket ticket = null;
 		try {
 			con = dataBaseConfig.getConnection();
 			PreparedStatement ps = con.prepareStatement(DBConstants.GET_TICKET);
-			// ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
 			ps.setString(1, vehicleRegNumber);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -63,13 +98,25 @@ public class TicketDAO {
 			dataBaseConfig.closeResultSet(rs);
 			dataBaseConfig.closePreparedStatement(ps);
 		} catch (Exception ex) {
-			logger.error("Error fetching next available slot", ex);
+			logger.error("Error fetching the ticket", ex);
 		} finally {
 			dataBaseConfig.closeConnection(con);
 		}
 		return ticket;
 	}
 
+	/**
+	 * Method that update the ticket saved in database with the PRICE and the
+	 * OUT_TIME
+	 * 
+	 * @param ticket an instance of ticket that contain : ID, PARKINGSPOT,
+	 *               VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME
+	 * 
+	 * @return true if the ticket is updated with success
+	 * 
+	 * @exception if the ticket cannot be updated, display the exception with a
+	 *               logger
+	 */
 	public boolean updateTicket(Ticket ticket) {
 		Connection con = null;
 		try {
@@ -78,21 +125,30 @@ public class TicketDAO {
 			ps.setDouble(1, ticket.getPrice());
 			ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));
 			ps.setInt(3, ticket.getId());
-
 			ps.execute();
 			return true;
 		} catch (Exception ex) {
-			logger.error("Error saving ticket info", ex);
+			logger.error("Error upadate ticket info", ex);
 		} finally {
 			dataBaseConfig.closeConnection(con);
 		}
 		return false;
 	}
 
-	public int getOccurencesTicket(String vehicleRegNumber) {
+	/**
+	 * Method that count the occurrences of VEHICLE_REG_NUMBER in the database
+	 * 
+	 * @param vehicleRegNumber A string that contain the vehicle registration number
+	 * 
+	 * @return occurrences A integer of occurrences find in database
+	 * 
+	 * @exception if the ticket cannot be fetching the occurrences of the
+	 *               VEHICLE_REG_NUMBER ,display the exception with a logger
+	 */
+	public int getOccurrencesTicket(String vehicleRegNumber) {
 
 		Connection con = null;
-		int occurences = 0;
+		int occurrences = 0;
 
 		try {
 			con = dataBaseConfig.getConnection();
@@ -101,15 +157,15 @@ public class TicketDAO {
 			ps.setString(1, vehicleRegNumber);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				occurences = rs.getInt(2);
+				occurrences = rs.getInt(2);
 			}
 			dataBaseConfig.closeResultSet(rs);
 			dataBaseConfig.closePreparedStatement(ps);
 		} catch (Exception ex) {
-			logger.error("Error fetching next available slot", ex);
+			logger.error("Error fetching the occurrences", ex);
 		} finally {
 			dataBaseConfig.closeConnection(con);
 		}
-		return occurences;
+		return occurrences;
 	}
 }
