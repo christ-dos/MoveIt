@@ -7247,3 +7247,10 @@ java.lang.IllegalArgumentException: Entered input is invalid
 	at com.parkit.parkingsystem.service.ParkingService.processIncomingVehicle(ParkingService.java:34) [classes/:?]
 	at com.parkit.parkingsystem.service.InteractiveShell.loadInterface(InteractiveShell.java:28) [classes/:?]
 	at com.parkit.parkingsystem.App.main(App.java:11) [classes/:?]
+2021-04-05 17:11:28 [main] ERROR ParkingService:138 - Error parsing user input for type of vehicle
+java.lang.IllegalArgumentException: Entered input is invalid
+	at com.parkit.parkingsystem.service.ParkingService.getVehichleType(ParkingService.java:167) ~[classes/:?]
+	at com.parkit.parkingsystem.service.ParkingService.getNextParkingNumberIfAvailable(ParkingService.java:130) [classes/:?]
+	at com.parkit.parkingsystem.service.ParkingService.processIncomingVehicle(ParkingService.java:71) [classes/:?]
+	at com.parkit.parkingsystem.service.InteractiveShell.loadInterface(InteractiveShell.java:42) [classes/:?]
+	at com.parkit.parkingsystem.App.main(App.java:29) [classes/:?]
