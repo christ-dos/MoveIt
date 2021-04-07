@@ -80,7 +80,7 @@ public class FareCalculatorService {
 
 	public double getPriceRounded(double price) {
 
-		return Precision.round(price, 1);
+		return Precision.round(price, 2);
 
 	}
 

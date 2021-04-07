@@ -84,7 +84,6 @@ public class ParkingDataBaseIT {
 		parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 		when(inputReaderUtil.readSelection()).thenReturn(1);
 		when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-		System.out.println("executer avec before each");
 		dataBasePrepareService.clearDataBaseEntries();
 		parkingService.processIncomingVehicle();
 	}
@@ -132,13 +131,12 @@ public class ParkingDataBaseIT {
 		dataBasePrepareService.clearDataBaseEntries();
 		String vehicleRegNumber = "ABCDEF";
 		Ticket ticket = new Ticket();
-		Date inTime = new Date();
-		inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
 		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
 		// WHEN
-		ticket.setInTime(inTime);
+		ticket.setInTime(new Date(System.currentTimeMillis() - (60 * 60 * (1000 + 2))));
 		ticket.setVehicleRegNumber(vehicleRegNumber);
 		ticket.setParkingSpot(parkingSpot);
+		// ticket.setOutTime(new Date(ticket.getInTime().getTime() + 2000));
 		ticketDAO.saveTicket(ticket);
 		parkingService.processExitingVehicle();
 		double price = ticketDAO.getTicket(vehicleRegNumber).getPrice();

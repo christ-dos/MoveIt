@@ -68,18 +68,9 @@ public class ParkingServiceTest {
 	@BeforeEach
 	private void setUpPerTest() {
 		try {
+
 			when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-
-			ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
-			Ticket ticket = new Ticket();
-			ticket.setInTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000)));
-			ticket.setParkingSpot(parkingSpot);
-			ticket.setVehicleRegNumber("ABCDEF");
-			when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
-			when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(true);
-
-			when(parkingSpotDAO.updateParking(any(ParkingSpot.class))).thenReturn(true);
-
+			when(ticketDAO.getOccurrencesTicket(anyString())).thenReturn(2);
 			parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -93,10 +84,50 @@ public class ParkingServiceTest {
 	 */
 	@Test
 	public void processExitingVehicleTest() {
+		// GIVEN
+		Ticket ticket = new Ticket();
+		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
+
+		ticket.setInTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000)));
+		ticket.setParkingSpot(parkingSpot);
+		ticket.setVehicleRegNumber("ABCDEF");
+		ticket.setParkingSpot(parkingSpot);
+		ticket.setPrice(0);
+		ticket.setOutTime(null);
+
+		when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(true);
+		when(ticketDAO.getTicket(anyString())).thenReturn(ticket);
+		when(parkingSpotDAO.updateParking(any(ParkingSpot.class))).thenReturn(true);
+		// WHEN
 		parkingService.processExitingVehicle();
+		// THEN
 		verify(parkingSpotDAO, times(1)).updateParking(any(ParkingSpot.class));
 		verify(ticketDAO, times(1)).updateTicket(any(Ticket.class));
 		verify(ticketDAO, times(1)).getTicket(anyString());
+		verify(ticketDAO, times(1)).getOccurrencesTicket(anyString());
+	}
+
+	/**
+	 * Method that test the process to incoming the parking spot verification if the
+	 * methods was called with mocks
+	 */
+	@Test
+	public void processIncomingVehicleTest() {
+		// GIVEN
+		ParkingType parkingType = ParkingType.CAR;
+
+		when(inputReaderUtil.readSelection()).thenReturn(1);
+		when(parkingSpotDAO.updateParking(any(ParkingSpot.class))).thenReturn(true);
+		when(parkingSpotDAO.getNextAvailableSlot(parkingType)).thenReturn(1);
+		when(ticketDAO.saveTicket(any(Ticket.class))).thenReturn(true);
+		// WHEN
+		parkingService.processIncomingVehicle();
+		// THEN
+		verify(parkingSpotDAO, times(1)).updateParking(any(ParkingSpot.class));
+		verify(ticketDAO, times(1)).saveTicket(any(Ticket.class));
+		verify(ticketDAO, times(1)).getOccurrencesTicket(anyString());
+		verify(parkingSpotDAO, times(1)).getNextAvailableSlot(any());
+
 	}
 
 }

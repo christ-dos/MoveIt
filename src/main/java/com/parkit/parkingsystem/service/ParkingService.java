@@ -198,8 +198,8 @@ public class ParkingService {
 				parkingSpot.setAvailable(true);
 				parkingSpotDAO.updateParking(parkingSpot);
 
-				System.out.println("Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:"
-						+ outTime + "$");
+				System.out.println(
+						"Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:" + outTime);
 				// System.out.println("les occurrences:" + occurrences);
 
 			} else {
