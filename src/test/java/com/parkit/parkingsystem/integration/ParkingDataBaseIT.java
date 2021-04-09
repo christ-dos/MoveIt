@@ -33,6 +33,7 @@ import com.parkit.parkingsystem.util.InputReaderUtil;
  */
 @ExtendWith(MockitoExtension.class)
 public class ParkingDataBaseIT {
+
 	/**
 	 * @see DataBaseTestConfig
 	 */
@@ -132,11 +133,10 @@ public class ParkingDataBaseIT {
 		String vehicleRegNumber = "ABCDEF";
 		Ticket ticket = new Ticket();
 		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
-		// WHEN
 		ticket.setInTime(new Date(System.currentTimeMillis() - (60 * 60 * (1000 + 2))));
 		ticket.setVehicleRegNumber(vehicleRegNumber);
 		ticket.setParkingSpot(parkingSpot);
-		// ticket.setOutTime(new Date(ticket.getInTime().getTime() + 2000));
+		// WHEN
 		ticketDAO.saveTicket(ticket);
 		parkingService.processExitingVehicle();
 		double price = ticketDAO.getTicket(vehicleRegNumber).getPrice();

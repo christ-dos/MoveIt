@@ -47,7 +47,7 @@ public class DataBaseConfig {
 	}
 
 	/**
-	 * Method that permit closure of the connection to the the database
+	 * Method that permit closure of the connection to the database
 	 * 
 	 * @param con contain the information of connection to the database
 	 * 
