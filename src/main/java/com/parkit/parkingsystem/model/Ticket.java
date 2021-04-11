@@ -139,7 +139,7 @@ public class Ticket {
 	 * @return outTime The time of exit
 	 */
 	public Date getOutTime() {
-		return outTime;
+		return outTime != null ? new Date(outTime.getTime()) : null;
 	}
 
 	/**
@@ -148,6 +148,6 @@ public class Ticket {
 	 * @param outTime The time of exit
 	 */
 	public void setOutTime(Date outTime) {
-		this.outTime = outTime;
+		this.outTime = outTime != null ? new Date(outTime.getTime()) : null;
 	}
 }
