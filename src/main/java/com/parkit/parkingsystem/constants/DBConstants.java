@@ -36,5 +36,5 @@ public class DBConstants {
 	 * This constant count the occurrences saved in the table ticket group by
 	 * VEHICLE_REG_NUMBER
 	 */
-	public static final String GET_OCCURENCES_TICKET = "select t.VEHICLE_REG_NUMBER, COUNT(*) AS occurences from ticket t where t.VEHICLE_REG_NUMBER=? GROUP BY t.VEHICLE_REG_NUMBER ";
+	public static final String GET_OCCURRENCES_TICKET = "select t.VEHICLE_REG_NUMBER, COUNT(*) AS occurences from ticket t where t.VEHICLE_REG_NUMBER=? GROUP BY t.VEHICLE_REG_NUMBER ";
 }

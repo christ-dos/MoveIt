@@ -69,7 +69,6 @@ public class ParkingServiceTest {
 	@BeforeEach
 	private void setUpPerTest() {
 		try {
-
 			parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,23 +78,19 @@ public class ParkingServiceTest {
 
 	/**
 	 * Method that test the process to exiting the parking spot verification if the
-	 * methods was called with mocks @throws
+	 * methods was called with mocks
+	 * 
+	 * @throws Exception
 	 */
 	@Test
-	public void processExitingVehicleTest() {
+	public void processExitingVehicleTest() throws Exception {
 		// GIVEN
-		try {
-			when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
+		when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
 		when(ticketDAO.getOccurrencesTicket(anyString())).thenReturn(2);
 		Ticket ticket = new Ticket();
 		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
 
 		ticket.setInTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000)));
-		ticket.setParkingSpot(parkingSpot);
 		ticket.setVehicleRegNumber("ABCDEF");
 		ticket.setParkingSpot(parkingSpot);
 		ticket.setPrice(0);
@@ -122,16 +117,11 @@ public class ParkingServiceTest {
 	@Test
 	public void processIncomingVehicleTest() throws Exception {
 		// GIVEN
-		when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-		when(ticketDAO.getOccurrencesTicket(anyString())).thenReturn(2);
 		ParkingType parkingType = ParkingType.CAR;
 		when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
 		when(ticketDAO.getOccurrencesTicket(anyString())).thenReturn(2);
-
 		when(inputReaderUtil.readSelection()).thenReturn(1);
-		when(parkingSpotDAO.updateParking(any(ParkingSpot.class))).thenReturn(true);
 		when(parkingSpotDAO.getNextAvailableSlot(parkingType)).thenReturn(1);
-		when(ticketDAO.saveTicket(any(Ticket.class))).thenReturn(true);
 		// WHEN
 		parkingService.processIncomingVehicle();
 		// THEN
@@ -139,23 +129,41 @@ public class ParkingServiceTest {
 		verify(ticketDAO, times(1)).saveTicket(any(Ticket.class));
 		verify(ticketDAO, times(1)).getOccurrencesTicket(anyString());
 		verify(parkingSpotDAO, times(1)).getNextAvailableSlot(any());
-
 	}
 
+	/**
+	 * Method that test if an exception is thrown when the parkingType is null
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void getNextParkingNumberIfAvailableTestWhenParkingTypeIsNull() {
+
+		// GIVEN
+		// incorrect input in the method getVehicleType()
+		when(inputReaderUtil.readSelection()).thenReturn(3);
+		// WHEN
+
+		// THEN
+		assertThrows(Exception.class, () -> parkingService.getNextParkingNumberIfAvailable().getParkingType());
+	}
+
+	/**
+	 * Method that verify if getNextAvailableSlot() is called in method
+	 * getNextParkingNumberIfAvailable()
+	 */
 	@Test
 	public void getNextParkingNumberIfAvailableTest() {
 
 		// GIVEN
-		// ParkingType parkingType = ParkingType.CAR;
-		// int parkingNumber = 0;
-		when(inputReaderUtil.readSelection()).thenReturn(3);
+		ParkingType parkingType = ParkingType.CAR;
+		when(inputReaderUtil.readSelection()).thenReturn(1);
+		when(parkingSpotDAO.getNextAvailableSlot(parkingType)).thenReturn(1);
 		// WHEN
-
-		// ParkingSpot parkingSpot = new ParkingSpot(parkingNumber, parkingType, true);
-
+		parkingService.getNextParkingNumberIfAvailable();
 		// THEN
+		verify(parkingSpotDAO, times(1)).getNextAvailableSlot(any());
 
-		assertThrows(Exception.class, () -> parkingService.getNextParkingNumberIfAvailable().getParkingType());
 	}
 
 }

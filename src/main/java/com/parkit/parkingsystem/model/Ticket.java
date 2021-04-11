@@ -121,7 +121,7 @@ public class Ticket {
 	 * @return inTime The time of entry of the vehicle
 	 */
 	public Date getInTime() {
-		return inTime;
+		return new Date(inTime.getTime());
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class Ticket {
 	 * @param inTime the Time of entry of the vehicle
 	 */
 	public void setInTime(Date inTime) {
-		this.inTime = inTime;
+		this.inTime = new Date(inTime.getTime());
 	}
 
 	/**

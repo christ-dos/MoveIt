@@ -38,22 +38,27 @@ public class ParkingDataBaseIT {
 	 * @see DataBaseTestConfig
 	 */
 	private static DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
+
 	/**
 	 * @see ParkingSpotDAO
 	 */
 	private static ParkingSpotDAO parkingSpotDAO;
+
 	/**
 	 * @see TicketDAO
 	 */
 	private static TicketDAO ticketDAO;
+
 	/**
 	 * @see DataBasePrepareService
 	 */
 	private static DataBasePrepareService dataBasePrepareService;
+
 	/**
 	 * @see ParkingService
 	 */
 	private static ParkingService parkingService;
+
 	/**
 	 * @see InputReaderUtil
 	 */
@@ -67,12 +72,12 @@ public class ParkingDataBaseIT {
 	 */
 	@BeforeAll
 	private static void setUp() throws Exception {
+
 		parkingSpotDAO = new ParkingSpotDAO();
 		parkingSpotDAO.dataBaseConfig = dataBaseTestConfig;
 		ticketDAO = new TicketDAO();
 		ticketDAO.dataBaseConfig = dataBaseTestConfig;
 		dataBasePrepareService = new DataBasePrepareService();
-		dataBasePrepareService.clearDataBaseEntries();
 	}
 
 	/**
@@ -82,11 +87,9 @@ public class ParkingDataBaseIT {
 	 */
 	@BeforeEach
 	private void setUpPerTest() throws Exception {
+
 		parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-		when(inputReaderUtil.readSelection()).thenReturn(1);
 		when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-		dataBasePrepareService.clearDataBaseEntries();
-		parkingService.processIncomingVehicle();
 	}
 
 	/**
@@ -97,6 +100,7 @@ public class ParkingDataBaseIT {
 	@AfterEach
 	private void unDefPerTest() throws Exception {
 
+		dataBasePrepareService.clearDataBaseEntries();
 	}
 
 	/**
@@ -107,17 +111,16 @@ public class ParkingDataBaseIT {
 	public void testParkingACar() {
 
 		// GIVEN
+		when(inputReaderUtil.readSelection()).thenReturn(1);
 		String vehicleRegNumber = "ABCDEF";
 		Ticket ticket = new Ticket();
 		// WHEN
+		parkingService.processIncomingVehicle();
 		ticket = ticketDAO.getTicket(vehicleRegNumber);
 		// THEN
 		assertEquals(vehicleRegNumber, ticket.getVehicleRegNumber());
 		assertNotNull(ticket);
 		assertFalse(ticket.getParkingSpot().isAvailable());
-		// TODO: check that a ticket is actually saved in DB and Parking table is
-		// updated
-		// with availability
 	}
 
 	/**
@@ -129,7 +132,6 @@ public class ParkingDataBaseIT {
 	@Test
 	public void testParkingLotExit() throws Exception {
 		// GIVEN
-		dataBasePrepareService.clearDataBaseEntries();
 		String vehicleRegNumber = "ABCDEF";
 		Ticket ticket = new Ticket();
 		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
@@ -144,7 +146,5 @@ public class ParkingDataBaseIT {
 		// THEN
 		assertNotNull(outTimePopulatedInDB);
 		assertEquals(1.50, price);
-		// TODO: check that the fare generated and out time are populated correctly in
-		// the database
 	}
 }

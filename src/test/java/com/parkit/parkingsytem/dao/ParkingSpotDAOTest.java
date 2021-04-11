@@ -29,6 +29,10 @@ public class ParkingSpotDAOTest {
 	 * @see ParkingSpotDAO
 	 */
 	private static ParkingSpotDAO parkingSpotDAO;
+	/**
+	 * @see ParkingSpot
+	 */
+	private ParkingSpot parkingSpot;
 
 	/**
 	 * Method that set the configuration required before anything
@@ -46,13 +50,13 @@ public class ParkingSpotDAOTest {
 	 * when the boolean isAvailable of parkingSpot is false
 	 */
 	@Test
-	public void TestingIfParkingSpotDAOIsUpdated() {
+	public void TestingIfParkingSpotDAOIsUpdatedWithBikeInSlotFour() {
 		// GIVEN
-		ParkingSpot parkingSpot = new ParkingSpot(4, ParkingType.BIKE, false);
+		parkingSpot = new ParkingSpot(4, ParkingType.BIKE, false);
 		// WHEN
-		parkingSpotDAO.updateParking(parkingSpot);
+		boolean resultExpected = parkingSpotDAO.updateParking(parkingSpot);
 		// THEN
-		assertTrue(parkingSpotDAO.updateParking(parkingSpot));
+		assertTrue(resultExpected);
 	}
 
 	/**
@@ -62,7 +66,7 @@ public class ParkingSpotDAOTest {
 	@Test
 	public void TestingParkingDAOIfgetNextAvailableSlot() {
 		// GIVEN
-		ParkingSpot parkingSpot = new ParkingSpot(4, ParkingType.BIKE, false);
+		parkingSpot = new ParkingSpot(4, ParkingType.BIKE, false);
 		ParkingType parkingType = ParkingType.BIKE;
 		// WHEN
 		parkingSpotDAO.updateParking(parkingSpot);

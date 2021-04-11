@@ -26,8 +26,8 @@ public class FareCalculatorService {
 		long inTime = ticket.getInTime().getTime();
 		long outTime = ticket.getOutTime().getTime();
 		// TODO: Some tests are failing here. Need to check if this logic is correct
-		double durationMs = ((outTime - inTime) / (60 * 1000));
-		double duration = durationMs / 60;
+		double durationMs = ((outTime - inTime) / (double) (60 * 1000));
+		double duration = durationMs / (double) 60;
 
 		// if duration is less that 1/2 hours
 		if (duration < 0.5) {
@@ -67,7 +67,7 @@ public class FareCalculatorService {
 	 * 
 	 * @param ticket An instance of the class Ticket
 	 */
-	public void calculateFareWithDiscountFivePercent(Ticket ticket) {
+	public void calculateFareWithDiscount(Ticket ticket) {
 
 		double discount = 0.05;// 5% give coefficient 0.05
 		calculateFare(ticket);

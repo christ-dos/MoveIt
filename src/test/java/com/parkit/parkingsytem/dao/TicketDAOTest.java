@@ -1,7 +1,7 @@
 package com.parkit.parkingsytem.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
 
@@ -50,7 +50,6 @@ public class TicketDAOTest {
 	 */
 	@BeforeAll
 	private static void setUp() {
-
 		ticketDAO = new TicketDAO();
 		ticketDAO.dataBaseConfig = dataBaseTestConfig;
 		dataBasePrepareService = new DataBasePrepareService();
@@ -61,14 +60,15 @@ public class TicketDAOTest {
 	 */
 	@BeforeEach
 	private void setUpPerTest() {
-
+		dataBasePrepareService.clearDataBaseEntries();
 		String vehicleRegNumber = "ABCDEF";
 		ticket = new Ticket();
-		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
+		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, true);
 		ticket.setInTime(new Date());
 		ticket.setVehicleRegNumber(vehicleRegNumber);
 		ticket.setParkingSpot(parkingSpot);
-		dataBasePrepareService.clearDataBaseEntries();
+		ticket.setOutTime(new Date());
+		ticket.setPrice(0);
 	}
 
 	/**
@@ -80,6 +80,7 @@ public class TicketDAOTest {
 
 		// GIVEN
 		String vehicleRegNumber = "ABCDEF";
+
 		// WHEN
 		ticketDAO.saveTicket(ticket);
 		int result = ticketDAO.getOccurrencesTicket(vehicleRegNumber);
@@ -96,9 +97,24 @@ public class TicketDAOTest {
 		// GIVEN
 
 		// WHEN
+		boolean resultExpected = ticketDAO.updateTicket(ticket);
+		// THEN
+		assertTrue(resultExpected);
+	}
+
+	/**
+	 * Method that test if the ticket is updated in ticketDAO
+	 */
+	@Test
+	public void TestingUpdatedTicketInTicketDAO() {
+
+		// GIVEN
+
+		// WHEN
 		boolean resultExpected = ticketDAO.saveTicket(ticket);
 		// THEN
-		assertFalse(resultExpected);
+		// return false if the first result of the method execute() is an update count
+		assertTrue(resultExpected);
 	}
 
 	/**

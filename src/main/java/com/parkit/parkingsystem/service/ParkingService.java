@@ -71,19 +71,17 @@ public class ParkingService {
 			ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
 			if (parkingSpot != null && parkingSpot.getId() > 0) {
 				String vehicleRegNumber = getVehichleRegNumber();
-				occurrences = ticketDAO.getOccurrencesTicket(vehicleRegNumber);
 
+				occurrences = ticketDAO.getOccurrencesTicket(vehicleRegNumber);
 				// check if it's a recurring user of the parking lot
 				if (occurrences >= 1) {
 					System.out.println(
 							"Welcome back!As a recurring user of our parking lot, you'll benefit from a 5% discount.");
 				}
-
 				parkingSpot.setAvailable(false);
 				parkingSpotDAO.updateParking(parkingSpot);// allot this parking space and mark it's availability as
 				Date inTime = new Date();
 				Ticket ticket = new Ticket();
-
 				// ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
 				// ticket.setId(ticketID);
 				ticket.setParkingSpot(parkingSpot);
@@ -181,7 +179,7 @@ public class ParkingService {
 			Date outTime = new Date();
 			ticket.setOutTime(outTime);
 
-			// search if the vehicleRegNumber in already save in DB
+			// search if the vehicleRegNumber already exits in DB
 			int occurrences = ticketDAO.getOccurrencesTicket(vehicleRegNumber);
 
 			if (occurrences < 2) {
@@ -189,8 +187,8 @@ public class ParkingService {
 				System.out.println("Please pay the parking fare:" + ticket.getPrice() + "$");
 				// fare calculate with discount
 			} else {
-				fareCalculatorService.calculateFareWithDiscountFivePercent(ticket);
-				System.out.println("Please pay the parking fare (you get a 5% discount): " + ticket.getPrice() + "$");
+				fareCalculatorService.calculateFareWithDiscount(ticket);
+				System.out.println("Please pay the parking fare (you get 5% discount): " + ticket.getPrice() + "$");
 			}
 
 			if (ticketDAO.updateTicket(ticket)) {
@@ -200,8 +198,6 @@ public class ParkingService {
 
 				System.out.println(
 						"Recorded out-time for vehicle number:" + ticket.getVehicleRegNumber() + " is:" + outTime);
-				// System.out.println("les occurrences:" + occurrences);
-
 			} else {
 				System.out.println("Unable to update ticket information. Error occurred");
 			}
