@@ -178,10 +178,7 @@ public class ParkingService {
 			Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
 			Date outTime = new Date();
 			ticket.setOutTime(outTime);
-
-			// search if the vehicleRegNumber already exits in DB
-			int occurrences = ticketDAO.getOccurrencesTicket(vehicleRegNumber);
-
+			// if not a recurring user paid full fare
 			if (occurrences < 2) {
 				fareCalculatorService.calculateFare(ticket);
 				System.out.println("Please pay the parking fare:" + ticket.getPrice() + "$");
@@ -190,7 +187,6 @@ public class ParkingService {
 				fareCalculatorService.calculateFareWithDiscount(ticket);
 				System.out.println("Please pay the parking fare (you get 5% discount): " + ticket.getPrice() + "$");
 			}
-
 			if (ticketDAO.updateTicket(ticket)) {
 				ParkingSpot parkingSpot = ticket.getParkingSpot();
 				parkingSpot.setAvailable(true);

@@ -86,7 +86,6 @@ public class ParkingServiceTest {
 	public void processExitingVehicleTest() throws Exception {
 		// GIVEN
 		when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-		when(ticketDAO.getOccurrencesTicket(anyString())).thenReturn(2);
 		Ticket ticket = new Ticket();
 		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
 
@@ -105,7 +104,6 @@ public class ParkingServiceTest {
 		verify(parkingSpotDAO, times(1)).updateParking(any(ParkingSpot.class));
 		verify(ticketDAO, times(1)).updateTicket(any(Ticket.class));
 		verify(ticketDAO, times(1)).getTicket(anyString());
-		verify(ticketDAO, times(1)).getOccurrencesTicket(anyString());
 	}
 
 	/**
