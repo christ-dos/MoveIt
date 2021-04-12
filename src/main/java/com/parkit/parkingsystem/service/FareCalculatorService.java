@@ -15,7 +15,9 @@ public class FareCalculatorService {
 	/**
 	 * Method that calculate the fare to paid
 	 * 
-	 * @param ticket
+	 * @param ticket An instance of the class Ticket
+	 * 
+	 * @see Ticket
 	 */
 	public void calculateFare(Ticket ticket) {
 		if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {
@@ -23,9 +25,8 @@ public class FareCalculatorService {
 		}
 		long inTime = ticket.getInTime().getTime();
 		long outTime = ticket.getOutTime().getTime();
-		// TODO: Some tests are failing here. Need to check if this logic is correct
-		double durationMs = ((outTime - inTime) / (60 * 1000));
-		double duration = durationMs / 60;
+		double durationMs = ((outTime - inTime) / (double) (60 * 1000));
+		double duration = durationMs / (double) 60;
 
 		// if duration is less that 1/2 hours
 		if (duration < 0.5) {
@@ -33,6 +34,7 @@ public class FareCalculatorService {
 		}
 		// Calculate the fare rate using the getTicketFareRate method
 		double fareRate = getTicketFareRate(ticket);
+
 		// ticket.setPrice(duration * fareRate);
 		ticket.setPrice(getPriceRounded(duration * fareRate));
 	}
@@ -40,7 +42,7 @@ public class FareCalculatorService {
 	/**
 	 * Method of getting the ticket fare rate.
 	 * 
-	 * @param ticket
+	 * @param ticket An instance of the class Ticket
 	 * 
 	 * @return a double with the fare rate
 	 */
@@ -62,50 +64,23 @@ public class FareCalculatorService {
 	/**
 	 * Method that calculate the fare with discount of 5%
 	 * 
-	 * @param ticket
+	 * @param ticket An instance of the class Ticket
 	 */
-	public void calculateFareWithDiscountFivePercent(Ticket ticket) {
+	public void calculateFareWithDiscount(Ticket ticket) {
 
 		double discount = 0.05;// 5% give coefficient 0.05
 		calculateFare(ticket);
 		double price = ticket.getPrice();
 		double reducing = price * discount;
+
 		System.out.println("The full fees is  :" + getPriceRounded(price) + "$");
 		ticket.setPrice(getPriceRounded(price - reducing));
 	}
 
 	public double getPriceRounded(double price) {
 
-		return Precision.round(price, 1);
+		return Precision.round(price, 2);
 
 	}
 
-<<<<<<< HEAD
-	public void calculateFare(Ticket ticket) {
-		if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {
-			throw new IllegalArgumentException("Out time provided is incorrect:" + ticket.getOutTime().toString());
-		}
-
-		long inTime = ticket.getInTime().getTime();
-		long outTime = ticket.getOutTime().getTime();
-
-		// TODO: Some tests are failing here. Need to check if this logic is correct
-		double durationMs = ((outTime - inTime) / (60 * 1000));
-		double duration = durationMs / 60;
-
-		switch (ticket.getParkingSpot().getParkingType()) {
-		case CAR: {
-			ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
-			break;
-		}
-		case BIKE: {
-			ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
-			break;
-		}
-		default:
-			throw new IllegalArgumentException("Unkown Parking Type");
-		}
-	}
-=======
->>>>>>> feature/integrationTest
 }

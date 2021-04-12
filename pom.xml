@@ -12,8 +12,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <sonar.projectKey>christ-dos_MoveIt</sonar.projectKey>
+		<sonar.organization>christ-dos</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -71,9 +73,9 @@
 		    <version>3.6.1</version>
 		</dependency>
     </dependencies>
-
     <build>
         <plugins>
+        
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -92,11 +94,22 @@
                                 </manifest>
                             </archive>
                             <descriptorRefs>
-                                <descriptorRef>executable-jar-with-dependencies</descriptorRef>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.0.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -151,7 +164,30 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+		    <groupId>org.codehaus.mojo</groupId>
+		    <artifactId>findbugs-maven-plugin</artifactId>
+		    <version>3.0.4</version>
+		    <configuration>
+		        <effort>Max</effort>
+		    </configuration>
+		    <executions>
+		        <execution>
+		            <goals>
+		                <goal>check</goal>
+		            </goals>
+		        </execution>
+		    </executions>
+		</plugin>
         </plugins>
     </build>
-
+     <reporting>
+		    <plugins>
+		        <plugin>
+		            <groupId>org.codehaus.mojo</groupId>
+		            <artifactId>findbugs-maven-plugin</artifactId>
+		            <version>3.0.4</version>
+		        </plugin>
+		    </plugins>
+		</reporting>
 </project>
