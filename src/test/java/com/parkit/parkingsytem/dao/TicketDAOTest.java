@@ -92,7 +92,7 @@ public class TicketDAOTest {
 	 * Method that test if the ticket is saved in ticketDAO
 	 */
 	@Test
-	public void TestingSavedTicketInTicketDAO() {
+	public void TestingUpadedTicketInTicketDAO() {
 
 		// GIVEN
 
@@ -106,14 +106,13 @@ public class TicketDAOTest {
 	 * Method that test if the ticket is updated in ticketDAO
 	 */
 	@Test
-	public void TestingUpdatedTicketInTicketDAO() {
+	public void TestingSavededTicketInTicketDAO() {
 
 		// GIVEN
 
 		// WHEN
 		boolean resultExpected = ticketDAO.saveTicket(ticket);
 		// THEN
-		// return false if the first result of the method execute() is an update count
 		assertTrue(resultExpected);
 	}
 
