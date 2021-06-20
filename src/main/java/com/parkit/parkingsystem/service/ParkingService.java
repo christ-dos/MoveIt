@@ -178,8 +178,9 @@ public class ParkingService {
 			Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
 			Date outTime = new Date();
 			ticket.setOutTime(outTime);
+			occurrences = ticketDAO.getOccurrencesTicket(vehicleRegNumber);
 			// if not a recurring user paid full fare
-			if (occurrences < 2) {
+			if (occurrences <= 1) {
 				fareCalculatorService.calculateFare(ticket);
 				System.out.println("Please pay the parking fare:" + ticket.getPrice() + "$");
 				// fare calculate with discount

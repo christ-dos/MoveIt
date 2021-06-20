@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -28,6 +29,7 @@ import com.parkit.parkingsystem.util.InputReaderUtil;
 /**
  * Class that Test the ParkingService and the database with an integration test
  * 
+ * 
  * @author Christine Duarte
  *
  */
@@ -36,37 +38,44 @@ public class ParkingDataBaseIT {
 
 	/**
 	 * @see DataBaseTestConfig
+	 * 
 	 */
 	private static DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
 
 	/**
 	 * @see ParkingSpotDAO
+	 * 
 	 */
 	private static ParkingSpotDAO parkingSpotDAO;
 
 	/**
 	 * @see TicketDAO
+	 * 
 	 */
 	private static TicketDAO ticketDAO;
 
 	/**
 	 * @see DataBasePrepareService
+	 * 
 	 */
 	private static DataBasePrepareService dataBasePrepareService;
 
 	/**
 	 * @see ParkingService
+	 * 
 	 */
 	private static ParkingService parkingService;
 
 	/**
 	 * @see InputReaderUtil
+	 * 
 	 */
 	@Mock
 	private static InputReaderUtil inputReaderUtil;
 
 	/**
 	 * Method that set the configuration required before anything
+	 * 
 	 * 
 	 * @throws Exception The exception is not treated it's throws
 	 */
@@ -83,6 +92,7 @@ public class ParkingDataBaseIT {
 	/**
 	 * Method that set the configuration required before each test
 	 * 
+	 * 
 	 * @throws Exception The exception is not treated it's throws
 	 */
 	@BeforeEach
@@ -90,21 +100,23 @@ public class ParkingDataBaseIT {
 
 		parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 		when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
+
 	}
 
 	/**
 	 * Method that set the configuration required after each test
 	 * 
+	 * 
 	 * @throws Exception The exception is not treated it's throws
 	 */
 	@AfterEach
 	private void unDefPerTest() throws Exception {
-
 		dataBasePrepareService.clearDataBaseEntries();
 	}
 
 	/**
 	 * Method that test if the ticket is saved in the database and if the parking
+	 * 
 	 * table is is updated with availability
 	 */
 	@Test
@@ -125,12 +137,14 @@ public class ParkingDataBaseIT {
 
 	/**
 	 * Method that test if the fare generated and the out time were populated
+	 * 
 	 * correctly in database
 	 * 
 	 * @throws Exception The exception is not treated it's throws
 	 */
 	@Test
 	public void testParkingLotExit() throws Exception {
+
 		// GIVEN
 		String vehicleRegNumber = "ABCDEF";
 		Ticket ticket = new Ticket();
@@ -146,5 +160,33 @@ public class ParkingDataBaseIT {
 		// THEN
 		assertNotNull(outTimePopulatedInDB);
 		assertEquals(1.50, price);
+	}
+
+	@Test
+	public void testParkingLotExitWithDiscount() throws Exception {
+		// GIVEN
+		String vehicleRegNumber = "ABCDEF";
+		double pricePerHour = Fare.BIKE_RATE_PER_HOUR;
+		double discount = 0.05;
+		Ticket ticket = new Ticket();
+		ParkingSpot parkingSpot = new ParkingSpot(4, ParkingType.BIKE, false);
+		ticket.setInTime(new Date(System.currentTimeMillis() - (4 * 60 * 60 * 1000)));
+		ticket.setVehicleRegNumber(vehicleRegNumber);
+		ticket.setParkingSpot(parkingSpot);
+		ticketDAO.saveTicket(ticket);
+		parkingService.processExitingVehicle();
+
+		Ticket ticket1 = new Ticket();
+		ParkingSpot parkingSpot1 = new ParkingSpot(4, ParkingType.BIKE, false);
+		ticket1.setInTime(new Date(System.currentTimeMillis() - (60 * 60 * 1000)));
+		ticket1.setVehicleRegNumber(vehicleRegNumber);
+		ticket1.setParkingSpot(parkingSpot1);
+		// WHEN
+		ticketDAO.saveTicket(ticket1);
+		parkingService.processExitingVehicle();
+		double priceExpectedWithDiscount = (pricePerHour) - (pricePerHour * discount);
+		double priceTicketDAO = ticketDAO.getTicket(vehicleRegNumber).getPrice();
+		// THEN
+		assertEquals(priceExpectedWithDiscount, priceTicketDAO);
 	}
 }
