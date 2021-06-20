@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Ticket.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">parking-system</a> &gt; <a href="index.source.html" class="el_package">com.parkit.parkingsystem.model</a> &gt; <span class="el_source">Ticket.java</span></div><h1>Ticket.java</h1><pre class="source lang-java linenums">package com.parkit.parkingsystem.model;
+
+import java.util.Date;
+
+/**
+ * Class model of a Ticket
+ * 
+ * The attributes of Ticket :id, parkingSpot, vehicleRegNumber, price, inTime,
+ * outTime
+ * 
+ * @author Christine Duarte
+ *
+ */
+<span class="fc" id="L14">public class Ticket {</span>
+	/**
+	 * An attribute of the class that contain the id of the ticket
+	 */
+	private int id;
+	/**
+	 * An attribute of the class that contain the parkingSpot of the ticket
+	 */
+	private ParkingSpot parkingSpot;
+	/**
+	 * An attribute of the class that contain the vehicleRegNumber of the ticket
+	 */
+	private String vehicleRegNumber;
+	/**
+	 * An attribute of the class that contain the price of the ticket
+	 */
+	private double price;
+	/**
+	 * An attribute of the class that contain the inTime : the time of entry of the
+	 * vehicle
+	 */
+	private Date inTime;
+	/**
+	 * An attribute of the class that contain the outTime : time of exit of the
+	 * vehicle
+	 */
+	private Date outTime;
+
+	/**
+	 * Method get to obtain the id of the ticket
+	 * 
+	 * @return id An integer
+	 */
+	public int getId() {
+<span class="fc" id="L48">		return id;</span>
+	}
+
+	/**
+	 * Method to set the id in the ticket
+	 * 
+	 * @param id An integer
+	 */
+	public void setId(int id) {
+<span class="fc" id="L57">		this.id = id;</span>
+<span class="fc" id="L58">	}</span>
+
+	/**
+	 * Method get to obtain the parkingSpot of the ticket
+	 * 
+	 * @return parkingSpot An instance of the class ParkingSpot
+	 * 
+	 * @see ParkingSpot
+	 */
+	public ParkingSpot getParkingSpot() {
+<span class="fc" id="L68">		return parkingSpot;</span>
+	}
+
+	/**
+	 * Method to set the parkingSpot of the ticket
+	 * 
+	 * @param parkingSpot parkingSpot An instance of the class ParkingSpot
+	 * 
+	 * @see ParkingSpot
+	 */
+	public void setParkingSpot(ParkingSpot parkingSpot) {
+<span class="fc" id="L79">		this.parkingSpot = parkingSpot;</span>
+<span class="fc" id="L80">	}</span>
+
+	/**
+	 * Method get to obtain the vehicleRegNumber of the ticket
+	 * 
+	 * @return vehicleRegNumber A String with the Vehicle Registration Number
+	 */
+	public String getVehicleRegNumber() {
+<span class="fc" id="L88">		return vehicleRegNumber;</span>
+	}
+
+	/**
+	 * Method to set the vehicleRegNumber of the ticket
+	 * 
+	 * @param vehicleRegNumber A String with the Vehicle Registration Number
+	 */
+	public void setVehicleRegNumber(String vehicleRegNumber) {
+<span class="fc" id="L97">		this.vehicleRegNumber = vehicleRegNumber;</span>
+<span class="fc" id="L98">	}</span>
+
+	/**
+	 * Method get to obtain the price of the ticket
+	 * 
+	 * @return price A double number
+	 */
+	public double getPrice() {
+<span class="fc" id="L106">		return price;</span>
+	}
+
+	/**
+	 * Method to set the price of the ticket
+	 * 
+	 * @param price A double number
+	 */
+	public void setPrice(double price) {
+<span class="fc" id="L115">		this.price = price;</span>
+<span class="fc" id="L116">	}</span>
+
+	/**
+	 * Method get to obtain the inTime of the ticket
+	 * 
+	 * @return inTime The time of entry of the vehicle
+	 */
+	public Date getInTime() {
+<span class="fc" id="L124">		return new Date(inTime.getTime());</span>
+	}
+
+	/**
+	 * Method to set the inTime of the ticket
+	 * 
+	 * @param inTime the Time of entry of the vehicle
+	 */
+	public void setInTime(Date inTime) {
+<span class="fc" id="L133">		this.inTime = new Date(inTime.getTime());</span>
+<span class="fc" id="L134">	}</span>
+
+	/**
+	 * Method get to obtain the outTime of the ticket
+	 * 
+	 * @return outTime The time of exit
+	 */
+	public Date getOutTime() {
+<span class="fc bfc" id="L142" title="All 2 branches covered.">		return outTime != null ? new Date(outTime.getTime()) : null;</span>
+	}
+
+	/**
+	 * Method to set the outTime of the ticket
+	 * 
+	 * @param outTime The time of exit
+	 */
+	public void setOutTime(Date outTime) {
+<span class="fc bfc" id="L151" title="All 2 branches covered.">		this.outTime = outTime != null ? new Date(outTime.getTime()) : null;</span>
+<span class="fc" id="L152">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
